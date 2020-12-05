@@ -64,16 +64,6 @@ const Map = ({ changeCurrentBusStops }) => {
         filter: ["in", "BusStopCode", ""],
       });
 
-      map.addLayer({
-        id: "busStops-highlighted",
-        type: "circle",
-        source: {
-          type: "vector",
-          url: "mapbox://streetlamb.70lzh80w",
-        },
-        "source-layer": "busRoutes_busStops1-2agmlg",
-      });
-
       map.on("move", () => {
         setMapOptions({
           lng: map.getCenter().lng.toFixed(4),
