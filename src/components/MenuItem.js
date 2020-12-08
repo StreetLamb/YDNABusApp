@@ -48,7 +48,7 @@ const RefreshButton = styled.button`
   height: 2rem;
 `;
 
-const MenuItem = ({ properties }) => {
+const MenuItem = ({ properties, setServiceNo }) => {
   const [busArrivals, setBusArrivals] = useState(null);
   const [openArrival, setOpenArrival] = useState(false);
 
@@ -99,8 +99,11 @@ const MenuItem = ({ properties }) => {
             <tbody>
               {busArrivals.map((bus) => {
                 return (
-                  <tr>
-                    <td style={{ padding: "0.5rem 40vw 0.5rem 0" }}>
+                  <tr key={`${bus.ServiceNo}${bus.BusStopCode}`}>
+                    <td
+                      onClick={() => setServiceNo(bus.ServiceNo)}
+                      style={{ padding: "0.5rem 40vw 0.5rem 0" }}
+                    >
                       {bus.ServiceNo}
                     </td>
                     <td style={{ padding: "0 1rem" }}>
@@ -119,24 +122,6 @@ const MenuItem = ({ properties }) => {
           </table>
         </ArrivalContainer>
       ) : null}
-      {/* {openArrival && busArrivals
-        ? busArrivals.map((bus) => {
-            return (
-              <ArrivalContainer key={bus.ServiceNo}>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>{bus.ServiceNo}</td>
-                      <td>{timeDiff(bus.NextBus.EstimatedArrival)}</td>
-                      <td>{timeDiff(bus.NextBus2.EstimatedArrival)}</td>
-                      <td>{timeDiff(bus.NextBus3.EstimatedArrival)}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </ArrivalContainer>
-            );
-          })
-        : null} */}
     </MainContainer>
   );
 };

@@ -1,10 +1,11 @@
-const TOKEN = process.env.REACT_APP_TOKEN;
+const LTA_TOKEN = process.env.REACT_APP_LTA_TOKEN;
+const MAPBOX_TOKEN = process.env.REACT_APP_MAPBOX_TOKEN;
 
 const getBusArrival = async (busStopCode) => {
   let requestOptions = {
     method: "GET",
     headers: {
-      AccountKey: TOKEN,
+      AccountKey: LTA_TOKEN,
     },
     redirect: "follow",
   };
@@ -19,6 +20,24 @@ const getBusArrival = async (busStopCode) => {
     return result.Services;
   } catch (error) {
     return console.log("error", error);
+  }
+};
+
+export const getBusRoutes = async () => {
+  const requestOptions = {
+    method: "GET",
+    redirect: "follow",
+  };
+
+  try {
+    const response = await fetch(
+      `https://api.mapbox.com/datasets/v1/streetlamb/ckiem4yfn0if923pi6h8zgwqs/features?access_token=${MAPBOX_TOKEN}`,
+      requestOptions
+    );
+    const result = await response.json();
+    return result;
+  } catch (err) {
+    console.log(err);
   }
 };
 
