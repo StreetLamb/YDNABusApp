@@ -5,21 +5,11 @@ import styled from "styled-components";
 import busRoutesData from "../data/busRoutesData.json";
 import Menu from "./Menu";
 
-const MainContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
-
-const MapContainer = styled.div`
-  display: flex !important;
-  height: 60vh !important;
-`;
-
-const StyledMenu = styled(Menu)``;
+const MainContainer = styled.div``;
 
 const SideBar = styled.div`
   display: inline-block;
+  position: relative;
   top: 0;
   left: 0;
   margin: 12px;
@@ -193,6 +183,7 @@ const Map = () => {
     } else {
       setToggleRouteView(false);
     }
+    console.log(routeDirection);
   }, [serviceNo, routeDirection]);
 
   const clickHandler = () => {
@@ -200,16 +191,20 @@ const Map = () => {
   };
 
   return (
-    <MainContainer>
-      <MapContainer ref={(el) => (mapContainer.current = el)}>
-        <SideBar>
-          Longitude: {mapOptions.lng} | Latitude: {mapOptions.lat} | Zoom:{" "}
-          {mapOptions.zoom}
-          <button onClick={clickHandler}>Remove toggle</button>
-        </SideBar>
-      </MapContainer>
+    <MainContainer
+      style={{ display: "flex", flexDirection: "column", height: "100vh" }}
+    >
+      <SideBar>
+        Longitude: {mapOptions.lng} | Latitude: {mapOptions.lat} | Zoom:{" "}
+        {mapOptions.zoom}
+        <button onClick={clickHandler}>Remove toggle</button>
+      </SideBar>
+      <div
+        ref={(el) => (mapContainer.current = el)}
+        style={{ height: "60vh" }}
+      />
       <div>
-        <StyledMenu
+        <Menu
           setServiceNo={(serviceNo) => setServiceNo(serviceNo)}
           setRouteDirection={(direction) => setRouteDirection(direction)}
           busRoutes={busRoutes}

@@ -1,4 +1,4 @@
-// import "./App.css";
+import "./App.css";
 import Map from "./components/Map";
 
 // const NavBar = styled.ul`
