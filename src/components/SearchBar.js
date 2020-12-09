@@ -1,24 +1,18 @@
 import { useState } from "react";
 
-const SearchBar = ({ searchText }) => {
-  const [searchText, setSearchText] = useState("");
-
-  const handleChange = (e) => {
-    // setSearchText(e.target.value);
-  };
-
+const SearchBar = ({ searchText, searchHandler }) => {
   return (
     <div>
       <input
-        type="text"
+        type="search"
         placeholder="Search for Buses and Bus Stops..."
         value={searchText}
-        onChange={handleChange}
+        onChange={searchHandler}
         style={{
           padding: ".7rem",
           width: "100%",
           fontSize: "1rem",
-          border: "None",
+          border: "none",
           borderBottom: "1px solid grey",
         }}
       />
