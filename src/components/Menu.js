@@ -1,6 +1,5 @@
 import MenuItem from "./MenuItem";
 import SearchBar from "./SearchBar";
-import { useState } from "react";
 
 const Menu = ({
   busStops,
@@ -48,12 +47,7 @@ const Menu = ({
               <button onClick={() => setRouteDirection("2")}>2</button>
             </div>
             {busRoutes.map((route, key) => {
-              const {
-                Description,
-                BusStopCode,
-                RoadName,
-                StopSequence,
-              } = route.properties;
+              const { Description, BusStopCode, RoadName } = route.properties;
               return (
                 <MenuItem
                   key={`${BusStopCode}-${key}`}

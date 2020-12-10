@@ -48,6 +48,11 @@ const RefreshButton = styled.button`
   height: 2rem;
 `;
 
+const StyledTD = styled.td`
+  padding: 0 1rem;
+  color: green;
+`;
+
 const MenuItem = ({ feature, setServiceNo, setMarker }) => {
   const [busArrivals, setBusArrivals] = useState(null);
   const [openArrival, setOpenArrival] = useState(false);
@@ -102,22 +107,64 @@ const MenuItem = ({ feature, setServiceNo, setMarker }) => {
         <ArrivalContainer>
           <table>
             <tbody>
-              {busArrivals.map((bus) => {
+              {busArrivals.map((bus, key) => {
                 return (
-                  <tr key={`${bus.ServiceNo}${bus.BusStopCode}`}>
+                  <tr key={`${bus.ServiceNo}-${key}`}>
                     <td
                       onClick={() => setServiceNo(bus.ServiceNo)}
                       style={{ padding: "0.5rem 40vw 0.5rem 0" }}
                     >
                       {bus.ServiceNo}
                     </td>
-                    <td style={{ padding: "0 1rem" }}>
+                    <td
+                      style={{
+                        padding: "0 1rem",
+                        fontWeight: "bold",
+                        color:
+                          bus.NextBus.Load === "SEA"
+                            ? "green"
+                            : bus.NextBus.Load === "SDA"
+                            ? "darkorange"
+                            : bus.NextBus.Load === "LSD"
+                            ? "red"
+                            : "black",
+                      }}
+                    >
+                      {bus.NextBus.Feature === "WAB" ? <span>♿</span> : null}
                       {timeDiff(bus.NextBus.EstimatedArrival)}
                     </td>
-                    <td style={{ padding: "0 1rem" }}>
+                    <td
+                      style={{
+                        margin: "0 1rem 1rem 0",
+                        fontWeight: "bold",
+                        color:
+                          bus.NextBus2.Load === "SEA"
+                            ? "green"
+                            : bus.NextBus2.Load === "SDA"
+                            ? "darkorange"
+                            : bus.NextBus2.Load === "LSD"
+                            ? "red"
+                            : "black",
+                      }}
+                    >
+                      {bus.NextBus2.Feature === "WAB" ? <span>♿</span> : null}
                       {timeDiff(bus.NextBus2.EstimatedArrival)}
                     </td>
-                    <td style={{ padding: "0 1rem" }}>
+                    <td
+                      style={{
+                        padding: "0 1rem",
+                        fontWeight: "bold",
+                        color:
+                          bus.NextBus3.Load === "SEA"
+                            ? "green"
+                            : bus.NextBus3.Load === "SDA"
+                            ? "darkorange"
+                            : bus.NextBus3.Load === "LSD"
+                            ? "red"
+                            : "black",
+                      }}
+                    >
+                      {bus.NextBus3.Feature === "WAB" ? <span>♿</span> : null}
                       {timeDiff(bus.NextBus3.EstimatedArrival)}
                     </td>
                   </tr>

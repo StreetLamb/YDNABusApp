@@ -197,7 +197,7 @@ const Map = () => {
     );
 
     if (features && features.length > 0) {
-      const busRoutes = [];
+      let busRoutes = [];
       let filter = features.reduce(
         function (memo, feature) {
           memo.push(feature.properties.BusStopCode);
@@ -208,21 +208,21 @@ const Map = () => {
       );
 
       map.setFilter("busRoutes", filter);
-      setBusRoutes(busRoutes);
+      busRoutes = busRoutes.sort((a, b) => {
+        return a.properties.StopSequence - b.properties.StopSequence;
+      });
+      setBusRoutes(busRoutes.sort());
     }
   };
 
   const markerHandler = (busStopCode, longitude, latitude) => {
     map.setFilter("busStopMarkers", ["in", "BusStopCode", busStopCode]);
-    map.flyTo({
-      center: [longitude, latitude],
-      zoom: 16,
-      // speed: 1,
-      // curve: 1,
-      // easing(t) {
-      //   return t;
-      // },
-    });
+    if (freezeView !== "map") {
+      map.flyTo({
+        center: [longitude, latitude],
+        zoom: 16,
+      });
+    }
   };
 
   return (
