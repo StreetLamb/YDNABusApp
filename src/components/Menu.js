@@ -5,7 +5,6 @@ import { useState } from "react";
 const Menu = ({
   busStops,
   busRoutes,
-  searchText,
   setServiceNo,
   freezeView,
   setRouteDirection,
@@ -14,22 +13,20 @@ const Menu = ({
   //   const [togglebusRoute, setTogglebusRoute] = useState(false); //toggle to view bus routes
 
   return (
-    <div>
+    <div style={{ height: "40vh", overflow: "scroll" }}>
       <div
         style={{
-          overflow: "scroll",
-          height: "40vh",
           display: "flex",
           flexDirection: "column",
         }}
       >
-        <SearchBar searchText={searchText} searchHandler={searchHandler} />
+        <SearchBar searchHandler={searchHandler} />
         {(freezeView === "map" || freezeView === "search") &&
         busStops.length > 0 ? (
-          busStops.map((busStop) => {
+          busStops.map((busStop, key) => {
             return (
               <MenuItem
-                key={busStop.BusStopCode}
+                key={`${busStop.BusStopCode}-${key}`}
                 properties={busStop}
                 setServiceNo={setServiceNo}
               />

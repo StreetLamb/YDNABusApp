@@ -1,21 +1,29 @@
 import { useState } from "react";
 
-const SearchBar = ({ searchText, searchHandler }) => {
+const SearchBar = ({ searchHandler }) => {
+  const [searchText, setSearchText] = useState("");
+
+  const onSumbitHandler = (e) => {
+    e.preventDefault();
+    searchHandler(searchText);
+  };
   return (
     <div>
-      <input
-        type="search"
-        placeholder="Search for Buses and Bus Stops..."
-        value={searchText}
-        onChange={searchHandler}
-        style={{
-          padding: ".7rem",
-          width: "100%",
-          fontSize: "1rem",
-          border: "none",
-          borderBottom: "1px solid grey",
-        }}
-      />
+      <form action="." onSubmit={onSumbitHandler}>
+        <input
+          type="search"
+          placeholder="Search for Buses and Bus Stops..."
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          style={{
+            padding: ".7rem",
+            width: "100%",
+            fontSize: "1rem",
+            border: "none",
+            borderBottom: "1px solid grey",
+          }}
+        />
+      </form>
     </div>
   );
 };

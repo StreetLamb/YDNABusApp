@@ -9,16 +9,16 @@ import Menu from "./Menu";
 const MainContainer = styled.div``;
 
 const SideBar = styled.div`
-  display: inline-block;
-  position: relative;
-  top: 0;
-  left: 0;
-  margin: 12px;
-  background-color: #404040;
-  color: #ffffff;
-  z-index: 1 !important;
-  padding: 6px;
-  font-weight: bold;
+  // display: inline-block;
+  // position: relative;
+  // top: 0;
+  // left: 0;
+  // margin: 12px;
+  // background-color: #404040;
+  // color: #ffffff;
+  // z-index: 1 !important;
+  // padding: 6px;
+  // font-weight: bold;
 `;
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -32,86 +32,22 @@ const Map = () => {
     lat: 1.34,
     zoom: 11.4,
   });
-  const [allbusRoutes] = useState(busRoutesData);
   const [freezeView, setFreezeView] = useState("map"); //map, route, search
   const [busStops, setBusStops] = useState([]);
   const [busRoutes, setBusRoutes] = useState([]);
   const [routeDirection, setRouteDirection] = useState("1");
   const [serviceNo, setServiceNo] = useState(null);
-  const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
     map = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/streets-v11",
-      center: [mapOptions.lng, mapOptions.lat],
-      zoom: mapOptions.zoom,
+      style: "mapbox://styles/streetlamb/ckii98mrj2hcc19s10sboh3rp",
+      // center: [mapOptions.lng, mapOptions.lat],
+      // zoom: mapOptions.zoom,
     });
 
     map.on("load", () => {
-      map.addLayer({
-        id: "busStops",
-        type: "circle",
-        source: {
-          type: "vector",
-          url: "mapbox://streetlamb.a509iu0r",
-        },
-        "source-layer": "busStops-4833k4",
-        paint: {
-          "circle-color": "rgba(0,0,0,0.1)",
-        },
-        layout: {
-          visibility: "visible",
-        },
-      });
-
-      map.addLayer({
-        id: "busStops-highlighted",
-        type: "circle",
-        source: {
-          type: "vector",
-          url: "mapbox://streetlamb.a509iu0r",
-        },
-        "source-layer": "busStops-4833k4",
-        filter: ["in", "BusStopCode", ""],
-        layout: {
-          visibility: "visible",
-        },
-      });
-
-      map.addLayer({
-        id: "busRoutes",
-        type: "circle",
-        source: {
-          type: "vector",
-          url: "mapbox://streetlamb.a509iu0r",
-        },
-        "source-layer": "busStops-4833k4",
-        paint: {
-          "circle-color": "rgba(0,0,0,1)",
-        },
-        filter: ["in", "BusStopCode", ""],
-        layout: {
-          visibility: "none",
-        },
-      });
-
-      map.addLayer({
-        id: "search",
-        type: "circle",
-        source: {
-          type: "vector",
-          url: "mapbox://streetlamb.a509iu0r",
-        },
-        "source-layer": "busStops-4833k4",
-        paint: {
-          "circle-color": "rgba(0,0,0,1)",
-        },
-        filter: ["in", "BusStopCode", ""],
-        layout: {
-          visibility: "none",
-        },
-      });
+      map.setFilter("busStops-highlighted", ["in", "BusStopCode", ""]);
 
       const { width, height } = mapContainer.current.getBoundingClientRect();
       const { left } = mapContainer.current.getBoundingClientRect();
@@ -123,9 +59,14 @@ const Map = () => {
           zoom: map.getZoom().toFixed(2),
         });
 
+        let factor = -126 + map.getZoom().toFixed(2) * 13.3;
+        if (factor < 0) {
+          factor = 1;
+        }
+
         const bbox = [
-          [left + width / 2 - 20, height / 2 - 20],
-          [left + width / 2 + 20, height / 2 + 20],
+          [left + width / 2 - factor, height / 2 - factor], //left, up
+          [left + width / 2 + factor, height / 2 + factor], //right, down
         ];
 
         const features = map.queryRenderedFeatures(bbox, {
@@ -148,6 +89,7 @@ const Map = () => {
         const features = map.queryRenderedFeatures({
           layers: ["busStops-highlighted"],
         });
+
         if (features && features.length > 0) {
           let newFeatures = features.reduce((memo, feature) => {
             memo.push(feature.properties);
@@ -159,13 +101,13 @@ const Map = () => {
 
       map.on("move", "busStops", highlight);
       map.on("moveend", "busStops", updateBusStops);
-      // map.on("zoom", () => {
-      //   if (map.getZoom() < 12) {
-      //     map.setPaintProperty("busStops", "circle-color", "rgba(0,0,0,0)");
-      //   } else {
-      //     map.setPaintProperty("busStops", "circle-color", "rgba(0,0,0,0.1)");
-      //   }
-      // });
+      map.on("zoom", () => {
+        if (map.getZoom() < 12) {
+          map.setPaintProperty("busStops", "circle-color", "rgba(0,0,0,0)");
+        } else {
+          map.setPaintProperty("busStops", "circle-color", "rgba(0,0,0,0.1)");
+        }
+      });
     });
   }, []);
 
@@ -174,52 +116,24 @@ const Map = () => {
       console.log(freezeView);
       if (freezeView === "map") {
         map.setLayoutProperty("busStops-highlighted", "visibility", "visible");
+        map.setLayoutProperty("busStops", "visibility", "visible");
         map.setLayoutProperty("busRoutes", "visibility", "none");
         map.setLayoutProperty("search", "visibility", "none");
       } else if (freezeView === "route") {
         map.setLayoutProperty("busRoutes", "visibility", "visible");
+        map.setLayoutProperty("busStops", "visibility", "none");
         map.setLayoutProperty("busStops-highlighted", "visibility", "none");
         map.setLayoutProperty("search", "visibility", "none");
       } else if (freezeView === "search") {
         map.setLayoutProperty("search", "visibility", "visible");
         map.setLayoutProperty("busStops-highlighted", "visibility", "none");
+        map.setLayoutProperty("busStops", "visibility", "none");
         map.setLayoutProperty("busRoutes", "visibility", "none");
       }
     } catch {}
   }, [freezeView]);
 
-  useEffect(() => {
-    if (serviceNo) {
-      // map.zoomTo(9.5);
-      setFreezeView("route");
-      let features = allbusRoutes.features.filter(
-        (feature) =>
-          feature.properties.ServiceNo === serviceNo &&
-          feature.properties.Direction === routeDirection
-      );
-
-      if (features && features.length > 0) {
-        const busRoutes = [];
-        let filter = features.reduce(
-          function (memo, feature) {
-            memo.push(feature.properties.BusStopCode);
-            busRoutes.push(feature.properties);
-            return memo;
-          },
-          ["in", "BusStopCode"]
-        );
-
-        map.setFilter("busRoutes", filter);
-        setBusRoutes(busRoutes);
-      }
-    } else {
-      setFreezeView("map");
-    }
-    console.log(busRoutes);
-  }, [serviceNo, routeDirection]);
-
-  useEffect(() => {
-    //TODO buscode in strings and numbers, cannot track. filter not working for description ans service no. Maybe need to add busstop file.
+  const searchHandler = (searchText) => {
     if (searchText.length > 0) {
       setFreezeView("search");
       let features = busStopsData.features.filter(
@@ -245,44 +159,102 @@ const Map = () => {
           },
           ["in", "BusStopCode"]
         );
-        console.log(filter);
         map.setFilter("search", filter);
         setBusStops(searchResult);
+        map.flyTo({
+          center: [
+            features[0].geometry.coordinates[0],
+            features[0].geometry.coordinates[1],
+          ],
+          zoom: 12.5,
+          // speed: 1,
+          // curve: 1,
+          // easing(t) {
+          //   return t;
+          // },
+        });
       }
     }
-  }, [searchText]);
+  };
 
-  const clickHandler = () => {
+  const mapHandler = () => {
     setFreezeView("map");
+  };
+
+  const routeHandler = (serviceNo, routeDirection) => {
+    // map.zoomTo(9.5);
+    setServiceNo(serviceNo);
+    setRouteDirection(routeDirection);
+    setFreezeView("route");
+
+    let features = busRoutesData.features.filter(
+      (feature) =>
+        feature.properties.ServiceNo === serviceNo &&
+        feature.properties.Direction === routeDirection
+    );
+
+    if (features && features.length > 0) {
+      const busRoutes = [];
+      let filter = features.reduce(
+        function (memo, feature) {
+          memo.push(feature.properties.BusStopCode);
+          busRoutes.push(feature.properties);
+          return memo;
+        },
+        ["in", "BusStopCode"]
+      );
+
+      map.setFilter("busRoutes", filter);
+      setBusRoutes(busRoutes);
+    }
   };
 
   return (
     <MainContainer
-      style={{ display: "flex", flexDirection: "column", height: "120vh" }}
+      style={{ display: "flex", flexDirection: "column", height: "100vh" }}
     >
-      <SideBar>
+      {/* <SideBar>
         Longitude: {mapOptions.lng} | Latitude: {mapOptions.lat} | Zoom:{" "}
         {mapOptions.zoom}
-        <button onClick={clickHandler}>Remove toggle</button>
-      </SideBar>
+        
+      </SideBar> */}
       <div
         ref={(el) => (mapContainer.current = el)}
-        style={{ height: "60vh" }}
-      />
-      <div>
-        <Menu
-          setServiceNo={setServiceNo}
-          setRouteDirection={setRouteDirection}
-          busRoutes={busRoutes}
-          freezeView={freezeView}
-          busStops={busStops}
-          routeDirection={routeDirection}
-          searchText={searchText}
-          searchHandler={(e) => setSearchText(e.target.value)}
-        />
+        style={{
+          height: "60vh",
+          position: "relative",
+        }}
+      >
+        {freezeView !== "map" ? (
+          <button
+            onClick={mapHandler}
+            style={{
+              position: "absolute",
+              width: "7rem",
+              bottom: "1rem",
+              color: "white",
+              background: "#404040",
+              border: "none",
+              borderRadius: ".5rem",
+              padding: ".2rem",
+              left: "calc(50vw - 3.5rem)",
+              zIndex: "1 !important",
+            }}
+          >
+            Unfreeze map
+          </button>
+        ) : null}
       </div>
 
-      {/* {React.cloneElement(children, { busRoutes, freezeView, busStops,  })} */}
+      <Menu
+        setServiceNo={(s) => routeHandler(s, routeDirection)}
+        setRouteDirection={(r) => routeHandler(serviceNo, r)}
+        busRoutes={busRoutes}
+        freezeView={freezeView}
+        busStops={busStops}
+        routeDirection={routeDirection}
+        searchHandler={searchHandler}
+      />
     </MainContainer>
   );
 };
