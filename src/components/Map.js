@@ -92,7 +92,7 @@ const Map = () => {
 
         if (features && features.length > 0) {
           let newFeatures = features.reduce((memo, feature) => {
-            memo.push(feature.properties);
+            memo.push(feature);
             return memo;
           }, []);
           setBusStops(newFeatures);
@@ -119,16 +119,19 @@ const Map = () => {
         map.setLayoutProperty("busStops", "visibility", "visible");
         map.setLayoutProperty("busRoutes", "visibility", "none");
         map.setLayoutProperty("search", "visibility", "none");
+        map.setFilter("busStopMarkers", ["in", "BusStopCode", ""]);
       } else if (freezeView === "route") {
         map.setLayoutProperty("busRoutes", "visibility", "visible");
         map.setLayoutProperty("busStops", "visibility", "none");
         map.setLayoutProperty("busStops-highlighted", "visibility", "none");
         map.setLayoutProperty("search", "visibility", "none");
+        map.setFilter("busStopMarkers", ["in", "BusStopCode", ""]);
       } else if (freezeView === "search") {
         map.setLayoutProperty("search", "visibility", "visible");
         map.setLayoutProperty("busStops-highlighted", "visibility", "none");
         map.setLayoutProperty("busStops", "visibility", "none");
         map.setLayoutProperty("busRoutes", "visibility", "none");
+        map.setFilter("busStopMarkers", ["in", "BusStopCode", ""]);
       }
     } catch {}
   }, [freezeView]);
@@ -154,7 +157,7 @@ const Map = () => {
         let filter = features.reduce(
           function (memo, feature) {
             memo.push(feature.properties.BusStopCode);
-            searchResult.push(feature.properties);
+            searchResult.push(feature);
             return memo;
           },
           ["in", "BusStopCode"]
@@ -198,7 +201,7 @@ const Map = () => {
       let filter = features.reduce(
         function (memo, feature) {
           memo.push(feature.properties.BusStopCode);
-          busRoutes.push(feature.properties);
+          busRoutes.push(feature);
           return memo;
         },
         ["in", "BusStopCode"]
@@ -209,15 +212,32 @@ const Map = () => {
     }
   };
 
+  const markerHandler = (busStopCode, longitude, latitude) => {
+    map.setFilter("busStopMarkers", ["in", "BusStopCode", busStopCode]);
+    map.flyTo({
+      center: [longitude, latitude],
+      zoom: 16,
+      // speed: 1,
+      // curve: 1,
+      // easing(t) {
+      //   return t;
+      // },
+    });
+  };
+
   return (
     <MainContainer
-      style={{ display: "flex", flexDirection: "column", height: "100vh" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+        background: "grey",
+      }}
     >
-      {/* <SideBar>
+      <SideBar>
         Longitude: {mapOptions.lng} | Latitude: {mapOptions.lat} | Zoom:{" "}
         {mapOptions.zoom}
-        
-      </SideBar> */}
+      </SideBar>
       <div
         ref={(el) => (mapContainer.current = el)}
         style={{
@@ -254,6 +274,7 @@ const Map = () => {
         busStops={busStops}
         routeDirection={routeDirection}
         searchHandler={searchHandler}
+        setMarker={markerHandler}
       />
     </MainContainer>
   );

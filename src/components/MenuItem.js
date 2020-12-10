@@ -48,7 +48,7 @@ const RefreshButton = styled.button`
   height: 2rem;
 `;
 
-const MenuItem = ({ properties, setServiceNo }) => {
+const MenuItem = ({ feature, setServiceNo, setMarker }) => {
   const [busArrivals, setBusArrivals] = useState(null);
   const [openArrival, setOpenArrival] = useState(false);
 
@@ -56,7 +56,12 @@ const MenuItem = ({ properties, setServiceNo }) => {
     e.stopPropagation(); //prevents event from bubbling
     e.preventDefault(); //prevents event from bubbling
     if ((refresh === false && !openArrival) || refresh === true) {
-      setBusArrivals(await getBusArrival(properties.BusStopCode));
+      setBusArrivals(await getBusArrival(feature.properties.BusStopCode));
+      setMarker(
+        feature.properties.BusStopCode,
+        feature.geometry.coordinates[0],
+        feature.geometry.coordinates[1]
+      ); //place marker on map to show the bus stop
     }
     if (refresh === false) setOpenArrival(!openArrival);
   };
@@ -76,13 +81,13 @@ const MenuItem = ({ properties, setServiceNo }) => {
       <TopContainer onClick={getArrivals}>
         <TextContainer>
           <TitleContainer>
-            <span>{properties.Description}</span>
+            <span>{feature.properties.Description}</span>
           </TitleContainer>
           <SubtitleContainer>
             <Span style={{ paddingRight: ".5rem" }}>
-              {properties.BusStopCode}
+              {feature.properties.BusStopCode}
             </Span>
-            <span>{properties.RoadName}</span>
+            <span>{feature.properties.RoadName}</span>
           </SubtitleContainer>
         </TextContainer>
         <SideContainer>
