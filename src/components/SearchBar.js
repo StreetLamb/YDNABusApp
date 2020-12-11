@@ -21,6 +21,8 @@ const SearchBar = ({ searchHandler }) => {
             fontSize: "1rem",
             border: "none",
             borderBottom: "1px solid grey",
+            borderRadius: "0",
+            WebkitAppearance: "none",
           }}
         />
       </form>

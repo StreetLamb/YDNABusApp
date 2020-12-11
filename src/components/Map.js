@@ -240,7 +240,7 @@ const Map = () => {
               background: "#404040",
               border: "none",
               borderRadius: ".5rem",
-              padding: ".2rem",
+              padding: ".5rem",
               left: "calc(50vw - 3.5rem)",
               zIndex: "1 !important",
             }}
