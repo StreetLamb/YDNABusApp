@@ -184,16 +184,17 @@ const Map = () => {
     setFreezeView("map");
   };
 
-  const routeHandler = (serviceNo, routeDirection) => {
+  const routeHandler = (serviceNo) => {
     // map.zoomTo(9.5);
     setServiceNo(serviceNo);
-    setRouteDirection(routeDirection);
+    let direction = routeDirection === "1" ? "2" : "1";
+    setRouteDirection(direction);
     setFreezeView("route");
 
     let features = busRoutesData.features.filter(
       (feature) =>
         feature.properties.ServiceNo === serviceNo &&
-        feature.properties.Direction === routeDirection
+        feature.properties.Direction === direction
     );
 
     if (features && features.length > 0) {
@@ -234,10 +235,10 @@ const Map = () => {
         background: "grey",
       }}
     >
-      <SideBar>
+      {/* <SideBar>
         Longitude: {mapOptions.lng} | Latitude: {mapOptions.lat} | Zoom:{" "}
         {mapOptions.zoom}
-      </SideBar>
+      </SideBar> */}
       <div
         ref={(el) => (mapContainer.current = el)}
         style={{
@@ -267,8 +268,8 @@ const Map = () => {
       </div>
 
       <Menu
-        setServiceNo={(s) => routeHandler(s, routeDirection)}
-        setRouteDirection={(r) => routeHandler(serviceNo, r)}
+        setServiceNo={(s) => routeHandler(s)}
+        setRouteDirection={(r) => routeHandler(serviceNo)}
         busRoutes={busRoutes}
         freezeView={freezeView}
         busStops={busStops}

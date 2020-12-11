@@ -1,5 +1,6 @@
 import MenuItem from "./MenuItem";
 import SearchBar from "./SearchBar";
+import { ReactComponent as SwapIcon } from "../icons/swap-vertical-outline.svg";
 
 const Menu = ({
   busStops,
@@ -17,7 +18,7 @@ const Menu = ({
       style={{
         height: "40vh",
         overflow: "scroll",
-        background: "white",
+        background: "#EFF1F5",
       }}
     >
       <div
@@ -41,11 +42,24 @@ const Menu = ({
           })
         ) : freezeView === "route" && busRoutes.length > 0 ? (
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <span>{busRoutes[0].properties.ServiceNo}</span>
-            <div style={{ display: "flex" }}>
-              <button onClick={() => setRouteDirection("1")}>1</button>
-              <button onClick={() => setRouteDirection("2")}>2</button>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <span
+                style={{
+                  fontWeight: "700",
+                  fontSize: "1.5rem",
+                  padding: ".2rem",
+                }}
+              >
+                {busRoutes[0].properties.ServiceNo}
+              </span>
+              <div style={{ display: "flex" }}>
+                <SwapIcon
+                  style={{ height: "2rem" }}
+                  onClick={setRouteDirection}
+                />
+              </div>
             </div>
+
             {busRoutes.map((route, key) => {
               const { Description, BusStopCode, RoadName } = route.properties;
               return (

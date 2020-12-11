@@ -1,12 +1,17 @@
 import { useState } from "react";
 import styled from "styled-components";
 import getBusArrival from "../api/api";
+import { ReactComponent as WheelChair } from "../icons/icon-wheelchair.svg";
+import { ReactComponent as DoubleDeckerBus } from "../icons/Icon_Icon_DoubleDeckerbus.svg";
+import { ReactComponent as NormalBus } from "../icons/icon-bus-normal.svg";
+import { ReactComponent as RefreshIcon } from "../icons/refresh-outline.svg";
 
 const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0.5rem;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #d5d8dc;
+  background: white;
 `;
 
 const TopContainer = styled.div`
@@ -43,16 +48,6 @@ const SideContainer = styled.div`
 flex:1'
 `;
 
-const RefreshButton = styled.button`
-  border: None;
-  height: 2rem;
-`;
-
-const StyledTD = styled.td`
-  padding: 0 1rem;
-  color: green;
-`;
-
 const MenuItem = ({ feature, setServiceNo, setMarker }) => {
   const [busArrivals, setBusArrivals] = useState(null);
   const [openArrival, setOpenArrival] = useState(false);
@@ -86,20 +81,23 @@ const MenuItem = ({ feature, setServiceNo, setMarker }) => {
       <TopContainer onClick={getArrivals}>
         <TextContainer>
           <TitleContainer>
-            <span>{feature.properties.Description}</span>
+            <span style={{ color: "#203462", fontWeight: "700" }}>
+              {feature.properties.Description}
+            </span>
           </TitleContainer>
           <SubtitleContainer>
-            <Span style={{ paddingRight: ".5rem" }}>
+            <Span style={{ paddingRight: ".5rem", color: "grey" }}>
               {feature.properties.BusStopCode}
             </Span>
-            <span>{feature.properties.RoadName}</span>
+            <span style={{ color: "grey" }}>{feature.properties.RoadName}</span>
           </SubtitleContainer>
         </TextContainer>
         <SideContainer>
           {openArrival ? (
-            <RefreshButton onClick={(e) => getArrivals(e, true)}>
-              Refresh
-            </RefreshButton>
+            <RefreshIcon
+              style={{ height: "1.5rem", color: "grey" }}
+              onClick={(e) => getArrivals(e, true)}
+            />
           ) : null}
         </SideContainer>
       </TopContainer>
@@ -112,14 +110,18 @@ const MenuItem = ({ feature, setServiceNo, setMarker }) => {
                   <tr key={`${bus.ServiceNo}-${key}`}>
                     <td
                       onClick={() => setServiceNo(bus.ServiceNo)}
-                      style={{ padding: "0.5rem 40vw 0.5rem 0" }}
+                      style={{
+                        padding: "1rem 20vw 1rem 0",
+                        color: "#285ec7",
+                        fontWeight: "bold",
+                      }}
                     >
                       {bus.ServiceNo}
                     </td>
                     <td
                       style={{
-                        padding: "0 1rem",
                         fontWeight: "bold",
+                        paddingRight: "1rem",
                         color:
                           bus.NextBus.Load === "SEA"
                             ? "green"
@@ -130,13 +132,23 @@ const MenuItem = ({ feature, setServiceNo, setMarker }) => {
                             : "black",
                       }}
                     >
-                      {bus.NextBus.Feature === "WAB" ? <span>♿</span> : null}
-                      {timeDiff(bus.NextBus.EstimatedArrival)}
+                      {bus.NextBus.Feature === "WAB" ? (
+                        <WheelChair style={{ height: "1rem" }} />
+                      ) : null}
+                      {bus.NextBus.Type === "DD" ? (
+                        <DoubleDeckerBus style={{ height: "1.5rem" }} />
+                      ) : (
+                        <NormalBus
+                          style={{ height: "1rem", paddingTop: ".5rem" }}
+                        />
+                      )}
+                      &nbsp;
+                      <span>{timeDiff(bus.NextBus.EstimatedArrival)}</span>
                     </td>
                     <td
                       style={{
-                        margin: "0 1rem 1rem 0",
                         fontWeight: "bold",
+                        paddingRight: "1rem",
                         color:
                           bus.NextBus2.Load === "SEA"
                             ? "green"
@@ -147,13 +159,23 @@ const MenuItem = ({ feature, setServiceNo, setMarker }) => {
                             : "black",
                       }}
                     >
-                      {bus.NextBus2.Feature === "WAB" ? <span>♿</span> : null}
+                      {bus.NextBus2.Feature === "WAB" ? (
+                        <WheelChair style={{ height: "1rem" }} />
+                      ) : null}
+                      {bus.NextBus2.Type === "DD" ? (
+                        <DoubleDeckerBus style={{ height: "1.5rem" }} />
+                      ) : (
+                        <NormalBus
+                          style={{ height: "1rem", paddingTop: ".5rem" }}
+                        />
+                      )}
+                      &nbsp;
                       {timeDiff(bus.NextBus2.EstimatedArrival)}
                     </td>
                     <td
                       style={{
-                        padding: "0 1rem",
                         fontWeight: "bold",
+                        paddingRight: "1rem",
                         color:
                           bus.NextBus3.Load === "SEA"
                             ? "green"
@@ -164,8 +186,18 @@ const MenuItem = ({ feature, setServiceNo, setMarker }) => {
                             : "black",
                       }}
                     >
-                      {bus.NextBus3.Feature === "WAB" ? <span>♿</span> : null}
-                      {timeDiff(bus.NextBus3.EstimatedArrival)}
+                      {bus.NextBus3.Feature === "WAB" ? (
+                        <WheelChair style={{ height: "1rem" }} />
+                      ) : null}
+                      {bus.NextBus3.Type === "DD" ? (
+                        <DoubleDeckerBus style={{ height: "1.5rem" }} />
+                      ) : (
+                        <NormalBus
+                          style={{ height: "1rem", paddingTop: ".5rem" }}
+                        />
+                      )}
+                      &nbsp;
+                      <span>{timeDiff(bus.NextBus3.EstimatedArrival)}</span>
                     </td>
                   </tr>
                 );

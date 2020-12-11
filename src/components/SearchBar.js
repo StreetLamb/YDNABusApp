@@ -12,7 +12,7 @@ const SearchBar = ({ searchHandler }) => {
       <form action="." onSubmit={onSumbitHandler}>
         <input
           type="search"
-          placeholder="Search for Buses and Bus Stops..."
+          placeholder="Search for Bus Stops names and codes..."
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           style={{
