@@ -8,30 +8,12 @@ import Menu from "./Menu";
 
 const MainContainer = styled.div``;
 
-const SideBar = styled.div`
-  // display: inline-block;
-  // position: relative;
-  // top: 0;
-  // left: 0;
-  // margin: 12px;
-  // background-color: #404040;
-  // color: #ffffff;
-  // z-index: 1 !important;
-  // padding: 6px;
-  // font-weight: bold;
-`;
-
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
 let map = null;
 
 const Map = () => {
   const mapContainer = useRef(null);
-  const [mapOptions, setMapOptions] = useState({
-    lng: 103.8,
-    lat: 1.34,
-    zoom: 11.4,
-  });
   const [freezeView, setFreezeView] = useState("map"); //map, route, search
   const [busStops, setBusStops] = useState([]);
   const [busRoutes, setBusRoutes] = useState([]);
@@ -42,23 +24,23 @@ const Map = () => {
     map = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/streetlamb/ckii98mrj2hcc19s10sboh3rp",
-      // center: [mapOptions.lng, mapOptions.lat],
-      // zoom: mapOptions.zoom,
     });
 
     map.on("load", () => {
+      map.addControl(
+        new mapboxgl.GeolocateControl({
+          positionOptions: {
+            enableHighAccuracy: true,
+          },
+          trackUserLocation: true,
+        })
+      );
+
       map.setFilter("busStops-highlighted", ["in", "BusStopCode", ""]);
 
-      const { width, height } = mapContainer.current.getBoundingClientRect();
-      const { left } = mapContainer.current.getBoundingClientRect();
-
       function highlight() {
-        setMapOptions({
-          lng: map.getCenter().lng.toFixed(4),
-          lat: map.getCenter().lat.toFixed(4),
-          zoom: map.getZoom().toFixed(2),
-        });
-
+        const { width, height } = mapContainer.current.getBoundingClientRect();
+        const { left } = mapContainer.current.getBoundingClientRect();
         let factor = -126 + map.getZoom().toFixed(2) * 13.3;
         if (factor < 0) {
           factor = 1;
@@ -236,9 +218,10 @@ const Map = () => {
       }}
     >
       {/* <SideBar>
-        Longitude: {mapOptions.lng} | Latitude: {mapOptions.lat} | Zoom:{" "}
-        {mapOptions.zoom}
-      </SideBar> */}
+          Longitude: {mapOptions.lng} | Latitude: {mapOptions.lat} | Zoom:{" "}
+          {mapOptions.zoom}
+          <NavigateIcon style={{ height: "2rem" }} />
+        </SideBar> */}
       <div
         ref={(el) => (mapContainer.current = el)}
         style={{
