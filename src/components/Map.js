@@ -17,7 +17,7 @@ const Map = () => {
   const [freezeView, setFreezeView] = useState("map"); //map, route, search
   const [busStops, setBusStops] = useState([]);
   const [busRoutes, setBusRoutes] = useState([]);
-  const [routeDirection, setRouteDirection] = useState("1");
+  const [routeDirection, setRouteDirection] = useState("2");
   const [serviceNo, setServiceNo] = useState(null);
 
   useEffect(() => {
