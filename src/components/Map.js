@@ -33,7 +33,8 @@ const Map = () => {
             enableHighAccuracy: true,
           },
           trackUserLocation: true,
-        })
+        }),
+        "bottom-right"
       );
 
       map.setFilter("busStops-highlighted", ["in", "BusStopCode", ""]);
