@@ -105,109 +105,115 @@ const MenuItem = ({ feature, setServiceNo, setMarker }) => {
         </SideContainer>
       </TopContainer>
       {openArrival && busArrivals ? (
-        <ArrivalContainer>
-          <table>
-            <tbody>
-              {busArrivals.map((bus, key) => {
-                return (
-                  <tr key={`${bus.ServiceNo}-${key}`}>
-                    <td
-                      onClick={() => setServiceNo(bus.ServiceNo)}
-                      style={{
-                        padding: "1rem 20vw 1rem 0",
-                        color: "#285ec7",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {bus.ServiceNo}
-                    </td>
-                    <td
-                      style={{
-                        fontWeight: "bold",
-                        paddingRight: "1rem",
-                        color:
-                          bus.NextBus.Load === "SEA"
-                            ? "green"
-                            : bus.NextBus.Load === "SDA"
-                            ? "darkorange"
-                            : bus.NextBus.Load === "LSD"
-                            ? "red"
-                            : "black",
-                      }}
-                    >
-                      {bus.NextBus.Feature === "WAB" ? (
-                        <WheelChair style={{ height: "1rem" }} />
-                      ) : null}
-                      {bus.NextBus.Type === "DD" ? (
-                        <DoubleDeckerBus style={{ height: "1.5rem" }} />
-                      ) : (
-                        <NormalBus
-                          style={{ height: "1rem", paddingTop: ".5rem" }}
-                        />
-                      )}
-                      &nbsp;
-                      <span>{timeDiff(bus.NextBus.EstimatedArrival)}</span>
-                    </td>
-                    <td
-                      style={{
-                        fontWeight: "bold",
-                        paddingRight: "1rem",
-                        color:
-                          bus.NextBus2.Load === "SEA"
-                            ? "green"
-                            : bus.NextBus2.Load === "SDA"
-                            ? "darkorange"
-                            : bus.NextBus2.Load === "LSD"
-                            ? "red"
-                            : "black",
-                      }}
-                    >
-                      {bus.NextBus2.Feature === "WAB" ? (
-                        <WheelChair style={{ height: "1rem" }} />
-                      ) : null}
-                      {bus.NextBus2.Type === "DD" ? (
-                        <DoubleDeckerBus style={{ height: "1.5rem" }} />
-                      ) : (
-                        <NormalBus
-                          style={{ height: "1rem", paddingTop: ".5rem" }}
-                        />
-                      )}
-                      &nbsp;
-                      {timeDiff(bus.NextBus2.EstimatedArrival)}
-                    </td>
-                    <td
-                      style={{
-                        fontWeight: "bold",
-                        paddingRight: "1rem",
-                        color:
-                          bus.NextBus3.Load === "SEA"
-                            ? "green"
-                            : bus.NextBus3.Load === "SDA"
-                            ? "darkorange"
-                            : bus.NextBus3.Load === "LSD"
-                            ? "red"
-                            : "black",
-                      }}
-                    >
-                      {bus.NextBus3.Feature === "WAB" ? (
-                        <WheelChair style={{ height: "1rem" }} />
-                      ) : null}
-                      {bus.NextBus3.Type === "DD" ? (
-                        <DoubleDeckerBus style={{ height: "1.5rem" }} />
-                      ) : (
-                        <NormalBus
-                          style={{ height: "1rem", paddingTop: ".5rem" }}
-                        />
-                      )}
-                      &nbsp;
-                      <span>{timeDiff(bus.NextBus3.EstimatedArrival)}</span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </ArrivalContainer>
+        busArrivals.length === 0 ? (
+          <span style={{ padding: "0.5rem", color: "#808080" }}>
+            No buses available
+          </span>
+        ) : (
+          <ArrivalContainer>
+            <table>
+              <tbody>
+                {busArrivals.map((bus, key) => {
+                  return (
+                    <tr key={`${bus.ServiceNo}-${key}`}>
+                      <td
+                        onClick={() => setServiceNo(bus.ServiceNo)}
+                        style={{
+                          padding: "1rem 20vw 1rem 0",
+                          color: "#285ec7",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {bus.ServiceNo}
+                      </td>
+                      <td
+                        style={{
+                          fontWeight: "bold",
+                          paddingRight: "1rem",
+                          color:
+                            bus.NextBus.Load === "SEA"
+                              ? "green"
+                              : bus.NextBus.Load === "SDA"
+                              ? "darkorange"
+                              : bus.NextBus.Load === "LSD"
+                              ? "red"
+                              : "black",
+                        }}
+                      >
+                        {bus.NextBus.Feature === "WAB" ? (
+                          <WheelChair style={{ height: "1rem" }} />
+                        ) : null}
+                        {bus.NextBus.Type === "DD" ? (
+                          <DoubleDeckerBus style={{ height: "1.5rem" }} />
+                        ) : (
+                          <NormalBus
+                            style={{ height: "1rem", paddingTop: ".5rem" }}
+                          />
+                        )}
+                        &nbsp;
+                        <span>{timeDiff(bus.NextBus.EstimatedArrival)}</span>
+                      </td>
+                      <td
+                        style={{
+                          fontWeight: "bold",
+                          paddingRight: "1rem",
+                          color:
+                            bus.NextBus2.Load === "SEA"
+                              ? "green"
+                              : bus.NextBus2.Load === "SDA"
+                              ? "darkorange"
+                              : bus.NextBus2.Load === "LSD"
+                              ? "red"
+                              : "black",
+                        }}
+                      >
+                        {bus.NextBus2.Feature === "WAB" ? (
+                          <WheelChair style={{ height: "1rem" }} />
+                        ) : null}
+                        {bus.NextBus2.Type === "DD" ? (
+                          <DoubleDeckerBus style={{ height: "1.5rem" }} />
+                        ) : (
+                          <NormalBus
+                            style={{ height: "1rem", paddingTop: ".5rem" }}
+                          />
+                        )}
+                        &nbsp;
+                        {timeDiff(bus.NextBus2.EstimatedArrival)}
+                      </td>
+                      <td
+                        style={{
+                          fontWeight: "bold",
+                          paddingRight: "1rem",
+                          color:
+                            bus.NextBus3.Load === "SEA"
+                              ? "green"
+                              : bus.NextBus3.Load === "SDA"
+                              ? "darkorange"
+                              : bus.NextBus3.Load === "LSD"
+                              ? "red"
+                              : "black",
+                        }}
+                      >
+                        {bus.NextBus3.Feature === "WAB" ? (
+                          <WheelChair style={{ height: "1rem" }} />
+                        ) : null}
+                        {bus.NextBus3.Type === "DD" ? (
+                          <DoubleDeckerBus style={{ height: "1.5rem" }} />
+                        ) : (
+                          <NormalBus
+                            style={{ height: "1rem", paddingTop: ".5rem" }}
+                          />
+                        )}
+                        &nbsp;
+                        <span>{timeDiff(bus.NextBus3.EstimatedArrival)}</span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </ArrivalContainer>
+        )
       ) : null}
     </MainContainer>
   );

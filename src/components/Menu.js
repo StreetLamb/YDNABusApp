@@ -59,6 +59,16 @@ const Menu = ({
               >
                 {busRoutes[0].properties.ServiceNo}
               </span>
+              <span
+                style={{
+                  fontWeight: "500",
+                  fontSize: ".8rem",
+                  alignSelf: "center",
+                }}
+              >
+                {busRoutes[0].properties.Description} -{" "}
+                {busRoutes.slice(-1)[0].properties.Description}
+              </span>
               <SwapIconContainer onClick={setRouteDirection}>
                 <SwapIcon style={{ height: "2rem" }} />
               </SwapIconContainer>
