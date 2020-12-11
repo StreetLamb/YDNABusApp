@@ -13,7 +13,7 @@ const getBusArrival = async (busStopCode) => {
   try {
     console.log("request");
     const response = await fetch(
-      `http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2?BusStopCode=${busStopCode}`,
+      `https://geojsonrain.vercel.app/BusArrival/${busStopCode}`,
       requestOptions
     );
     const result = await response.json();
