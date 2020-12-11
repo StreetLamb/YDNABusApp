@@ -199,13 +199,13 @@ const Map = () => {
   };
 
   const markerHandler = (busStopCode, longitude, latitude) => {
-    map.setFilter("busStopMarkers", ["in", "BusStopCode", busStopCode]);
     if (freezeView !== "map") {
       map.flyTo({
         center: [longitude, latitude],
         zoom: 16,
       });
     }
+    map.setFilter("busStopMarkers", ["in", "BusStopCode", busStopCode]);
   };
 
   return (

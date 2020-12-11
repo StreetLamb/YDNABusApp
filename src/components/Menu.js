@@ -1,6 +1,15 @@
 import MenuItem from "./MenuItem";
 import SearchBar from "./SearchBar";
 import { ReactComponent as SwapIcon } from "../icons/swap-vertical-outline.svg";
+import styled from "styled-components";
+
+const SwapIconContainer = styled.div`
+  background: #eff1f5;
+  display: flex;
+  &:active {
+    background: #d2d4d8;
+  }
+`;
 
 const Menu = ({
   busStops,
@@ -11,8 +20,6 @@ const Menu = ({
   searchHandler,
   setMarker,
 }) => {
-  //   const [togglebusRoute, setTogglebusRoute] = useState(false); //toggle to view bus routes
-
   return (
     <div
       style={{
@@ -52,12 +59,9 @@ const Menu = ({
               >
                 {busRoutes[0].properties.ServiceNo}
               </span>
-              <div style={{ display: "flex" }}>
-                <SwapIcon
-                  style={{ height: "2rem" }}
-                  onClick={setRouteDirection}
-                />
-              </div>
+              <SwapIconContainer onClick={setRouteDirection}>
+                <SwapIcon style={{ height: "2rem" }} />
+              </SwapIconContainer>
             </div>
 
             {busRoutes.map((route, key) => {

@@ -12,6 +12,9 @@ const MainContainer = styled.div`
   padding: 0.5rem;
   border-bottom: 1px solid #d5d8dc;
   background: white;
+  &:active {
+    background: #eaeaea;
+  }
 `;
 
 const TopContainer = styled.div`
