@@ -96,7 +96,6 @@ const Map = () => {
 
   useEffect(() => {
     try {
-      console.log(freezeView);
       if (freezeView === "map") {
         map.setLayoutProperty("busStops-highlighted", "visibility", "visible");
         map.setLayoutProperty("busStops", "visibility", "visible");
@@ -168,16 +167,24 @@ const Map = () => {
   };
 
   const routeHandler = (serviceNo) => {
-    // map.zoomTo(9.5);
     setServiceNo(serviceNo);
-    let direction = routeDirection === "1" ? "2" : "1";
-    setRouteDirection(direction);
-    setFreezeView("route");
 
     let features = busRoutesData.features.filter(
-      (feature) =>
-        feature.properties.ServiceNo === serviceNo &&
-        feature.properties.Direction === direction
+      (feature) => feature.properties.ServiceNo === serviceNo
+    );
+    let direction = routeDirection === "1" ? "2" : "1";
+    //check if its a loop serivce. If it is remain at 1
+    if (
+      direction === "2" &&
+      features[0].properties.BusStopCode ===
+        features.slice(-1)[0].properties.BusStopCode
+    ) {
+      direction = "1";
+    }
+    setRouteDirection(direction);
+    setFreezeView("route");
+    features = features.filter(
+      (feature) => feature.properties.Direction === direction
     );
 
     if (features && features.length > 0) {

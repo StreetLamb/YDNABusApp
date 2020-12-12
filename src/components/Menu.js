@@ -69,9 +69,14 @@ const Menu = ({
                 {busRoutes[0].properties.Description} -{" "}
                 {busRoutes.slice(-1)[0].properties.Description}
               </span>
-              <SwapIconContainer onClick={setRouteDirection}>
-                <SwapIcon style={{ height: "2rem" }} />
-              </SwapIconContainer>
+              {busRoutes[0].properties.BusStopCode !==
+              busRoutes.slice(-1)[0].properties.BusStopCode ? (
+                <SwapIconContainer onClick={setRouteDirection}>
+                  <SwapIcon style={{ height: "2rem" }} />
+                </SwapIconContainer>
+              ) : (
+                <div></div>
+              )}
             </div>
 
             {busRoutes.map((route, key) => {
